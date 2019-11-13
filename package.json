@@ -1,0 +1,35 @@
+{
+  "name": "brainha-server",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mysql2": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.4"
+  },
+  "scripts": {
+    "dev": "nodemon server",
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint:fix": "eslint --fix --ignore-path .gitignore .",
+    "start": "node server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/int-i/brainha-server.git"
+  },
+  "contributors": [
+    "Seungjae Park <astro.psj@gmail.com>"
+  ],
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/int-i/brainha-server/issues"
+  },
+  "homepage": "https://github.com/int-i/brainha-server#readme"
+}
