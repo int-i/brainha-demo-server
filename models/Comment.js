@@ -17,13 +17,12 @@ class Comment {
 
   toJSON() {
     const {
-      id, sid, content, hidden, createdAt, postId, commentBoxId,
+      id, sid, content, createdAt, postId, commentBoxId,
     } = this;
     return {
       id,
       sid,
       content,
-      hidden,
       createdAt,
       postId,
       commentBoxId,

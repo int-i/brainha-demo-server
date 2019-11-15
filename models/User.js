@@ -24,19 +24,17 @@ class User {
 
   toJSON() {
     const {
-      sid, name, departmentId, email, passwordHash,
-      permission, reputation, profileUrl, hidden, createdAt,
+      sid, name, departmentId, email,
+      permission, reputation, profileUrl, createdAt,
     } = this;
     return {
       sid,
       name,
       departmentId,
       email,
-      passwordHash,
       permission,
       reputation,
       profileUrl,
-      hidden,
       createdAt,
     };
   }

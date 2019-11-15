@@ -38,18 +38,18 @@ const enableBoard = async (req, res) => {
 
 const getBoard = async (req, res) => {
   const { id } = req.params;
-  const board = service.getBoard(id);
+  const board = await service.getBoard(id);
   res.send(board.toJSON());
 };
 
 const getBoards = async (req, res) => {
-  const boards = service.getBoards();
+  const boards = await service.getBoards();
   res.send(boards.map((board) => board.toJSON()));
 };
 
 const getPosts = async (req, res) => {
   const { id } = req.params;
-  const posts = service.getPosts(id);
+  const posts = await service.getPosts(id);
   res.send(posts.map((post) => post.toJSON()));
 };
 
@@ -70,7 +70,7 @@ const writePost = async (req, res) => {
   const { id } = params;
   const { title, content, tags } = body;
   if (decodedToken) {
-    await service.writePost(id, { title, content, tags });
+    await service.writePost(id, decodedToken.sid, { title, content, tags });
     res.end();
   } else {
     res.status(401).end();

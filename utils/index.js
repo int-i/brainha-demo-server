@@ -1,8 +1,8 @@
 const crypto = require('crypto');
 
-const filterEmpty = (data) => data.filter(
-  (value) => value !== -1 && value !== null && value !== undefined,
-);
+const filterEmpty = (data) => Object.fromEntries(Object.entries(data).filter(
+  ([, value]) => value !== -1 && value !== null && value !== undefined,
+));
 
 const isEquals = (decodedToken, sid) => decodedToken && decodedToken.sid === sid;
 const isManager = (decodedToken) => decodedToken && decodedToken.permission >= 1;

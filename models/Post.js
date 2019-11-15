@@ -20,14 +20,13 @@ class Post {
 
   toJSON() {
     const {
-      id, sid, title, content, hidden, views, likes, createdAt, boardId,
+      id, sid, title, content, views, likes, createdAt, boardId,
     } = this;
     return {
       id,
       sid,
       title,
       content,
-      hidden,
       views,
       likes,
       createdAt,

@@ -4,7 +4,6 @@ const postRepository = require('../repositories/posts');
 
 const checkLikes = async () => false; // todo
 
-
 const getComments = async (postId) => {
   const comments = await commentRepository.findByPostId(postId);
   return comments;
@@ -43,7 +42,7 @@ const updatePost = async (postId, data) => {
 };
 
 const writeComment = async (postId, sid, content) => {
-  await commentRepository.create(postId, sid, content);
+  await commentRepository.createFromPost(postId, sid, content);
 };
 
 const writeCommentBox = async (postId, sid, content) => {

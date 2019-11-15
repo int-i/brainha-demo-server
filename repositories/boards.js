@@ -21,7 +21,7 @@ const getAll = async () => {
 };
 
 const update = async (id, data) => {
-  await pool.query(`UPDATE boards SET ${Object.entries(data).map((key, value) => `${key} = ${value}`).join(', ')} WHERE id = ?`, [id]);
+  await pool.query('UPDATE boards SET ? WHERE id = ?', [data, id]);
 };
 
 module.exports = {

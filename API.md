@@ -62,11 +62,15 @@
 
 ### Comment Box
 
-- [ ] 답변글 삭제
-- [ ] **댓글 작성**
-- [ ] 답변글 좋아요
-- [ ] 답변글 좋아요 클릭 확인
-
+- [x] 모든 답변글 조회
+- [x] 답변글 조회
+- [ ] 답변글 강제 수정
+- [x] 답변글 수정
+- [ ] 답변글 강제 삭제
+- [x] 답변글 삭제
+- [x] **댓글 작성**
+- [x] 답변글 좋아요
+- [x] 답변글 좋아요 클릭 확인
 
 ### Comment
 
@@ -113,8 +117,6 @@ Output:
 [{ id, name, cost, duration }]
 ```
 
-
-
 ## User
 
 ### POST /users
@@ -124,7 +126,7 @@ Output:
 Input:
 
 ```text
-{ sid, name?, departmentId?, email?, passwordHash, permission, reputatin,  profileUrl?, hidden, createdAt }
+{ sid, name?, departmentId?, email?, password, profileUrl?, createdAt }
 ```
 
 Output:

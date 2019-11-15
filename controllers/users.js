@@ -46,14 +46,14 @@ const getSubscription = async (req, res) => {
 
 const getUser = async (req, res) => {
   const { sid } = req.params;
-  const user = service.getUser(sid);
+  const user = await service.getUser(sid);
   res.send(user.toJSON());
 };
 
 const getUsers = async (req, res) => {
   const { decodedToken } = req;
   if (isManager(decodedToken)) {
-    const users = service.getUsers();
+    const users = await service.getUsers();
     res.send(users.map((user) => user.toJSON()));
   } else {
     res.status(401).end();
@@ -63,6 +63,7 @@ const getUsers = async (req, res) => {
 const login = async (req, res) => {
   const { sid, password } = req.body;
   const token = await service.login(sid, password);
+  console.log('token', token);
   res.send({ token });
 };
 
@@ -89,7 +90,7 @@ const unsubscript = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { decodedToken, body } = req;
-  const { data } = body;
+  const data = body;
   data.password = data.password && sha512(data.password);
   if (decodedToken) {
     if (!isManager(decodedToken)) {

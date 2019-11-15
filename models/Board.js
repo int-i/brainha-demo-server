@@ -17,13 +17,12 @@ class Board {
 
   toJSON() {
     const {
-      id, name, description, hidden, createdAt, boardType, categoryId,
+      id, name, description, createdAt, boardType, categoryId,
     } = this;
     return {
       id,
       name,
       description,
-      hidden,
       createdAt,
       boardType,
       categoryId,

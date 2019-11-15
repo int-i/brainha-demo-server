@@ -2,7 +2,7 @@ const CommentBox = require('../models/CommentBox');
 const pool = require('../database');
 
 const create = async (postId, sid, content) => {
-  const [rows] = await pool.query('INSERT INTO comment_boxes (sid, post_id, content, hidden, created_at) VALUES (?, ?, ?, 0, NOW())', [sid, postId, content]);
+  const [rows] = await pool.query('INSERT INTO comment_boxes (sid, post_id, content, hidden, likes, created_at) VALUES (?, ?, ?, 0, 0, NOW())', [sid, postId, content]);
   const [[row]] = await pool.query('SELECT * FROM comment_boxes WHERE id = ?', [rows.insertId]);
   const commentBox = CommentBox.create(row);
   return commentBox;
@@ -31,7 +31,7 @@ const increase = async (id, data) => {
 };
 
 const update = async (id, data) => {
-  await pool.query(`UPDATE comment_boxes SET ${Object.entries(data).map((key, value) => `${key} = ${value}`).join(', ')} WHERE id = ?`, [id]);
+  await pool.query('UPDATE comment_boxes SET ? WHERE id = ?', [data, id]);
 };
 
 module.exports = {

@@ -31,7 +31,7 @@ const increase = async (id, data) => {
 };
 
 const update = async (id, data) => {
-  await pool.query(`UPDATE posts SET ${Object.entries(data).map((key, value) => `${key} = ${value}`).join(', ')} WHERE id = ?`, [id]);
+  await pool.query('UPDATE posts SET ? WHERE id = ?', [data, id]);
 };
 
 module.exports = {
