@@ -1,14 +1,15 @@
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
-const repository = require('../repositories/users');
+const subscriptionRepository = require('../repositories/subscriptions');
+const userRepository = require('../repositories/users');
 const { filterEmpty, sha512 } = require('../utils');
 
 dotenv.config();
 
 const { JWT_ISSUER, JWT_SECRET } = process.env;
 
-const createUser = async (sid, password, props) => {
-  const user = await repository.create(sid, password, props);
+const createUser = async (sid, password, data) => {
+  const user = await userRepository.create(sid, password, data);
   const payload = {
     sid: user.sid,
     name: user.name,
@@ -24,25 +25,30 @@ const createUser = async (sid, password, props) => {
 };
 
 const disableUser = async (sid) => {
-  await repository.update(sid, { hidden: 1 });
+  await userRepository.update(sid, { hidden: 1 });
 };
 
 const enableUser = async (sid) => {
-  await repository.update(sid, { hidden: 0 });
+  await userRepository.update(sid, { hidden: 0 });
+};
+
+const getSubcription = async (sid) => {
+  const subscription = await subscriptionRepository.findBySid(sid);
+  return subscription;
 };
 
 const getUser = async (sid) => {
-  const user = await repository.findBySid(sid);
+  const user = await userRepository.findBySid(sid);
   return user;
 };
 
 const getUsers = async () => {
-  const users = await repository.getAll();
+  const users = await userRepository.getAll();
   return users;
 };
 
 const login = async (sid, password) => {
-  const user = await repository.findBySid(sid);
+  const user = await userRepository.findBySid(sid);
   const passwordHash = sha512(password);
   if (passwordHash === user.passwordHash) {
     const payload = {
@@ -60,16 +66,28 @@ const login = async (sid, password) => {
   throw Error('No User');
 };
 
+const subscript = async (sid, planId) => {
+  await subscriptionRepository.create(sid, planId);
+};
+
+const unsubscript = async (sid) => {
+  const now = new Date();
+  await subscriptionRepository.update(sid, { valid: 0, canceled_at: now });
+};
+
 const updateUser = async (sid, data) => {
-  await repository.update(sid, filterEmpty(data));
+  await userRepository.update(sid, filterEmpty(data));
 };
 
 module.exports = {
   createUser,
   disableUser,
   enableUser,
+  getSubcription,
   getUser,
   getUsers,
   login,
+  subscript,
+  unsubscript,
   updateUser,
 };

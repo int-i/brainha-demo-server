@@ -1,5 +1,5 @@
 const service = require('../services/users');
-const { isEquals, isManager, sha512 } = require('../utils');
+const { isManager, sha512 } = require('../utils');
 
 const createUser = async (req, res) => {
   const {
@@ -15,10 +15,9 @@ const createUser = async (req, res) => {
 };
 
 const disableUser = async (req, res) => {
-  const { decodedToken, body } = req;
-  const { sid } = body;
-  if (isEquals(decodedToken, sid)) {
-    await service.disableUser(sid);
+  const { decodedToken } = req;
+  if (decodedToken) {
+    await service.disableUser(decodedToken.sid);
     res.end();
   } else {
     res.status(401).end();
@@ -26,19 +25,27 @@ const disableUser = async (req, res) => {
 };
 
 const enableUser = async (req, res) => {
-  const { decodedToken, body } = req;
-  const { sid } = body;
-  if (isEquals(decodedToken, sid)) {
+  const { decodedToken } = req;
+  if (decodedToken) {
     await service.enableUser(sid);
     res.end();
   } else {
     res.status(401).end();
   }
-  res.status(404).end();
+};
+
+const getSubcription = async (req, res) => {
+  const { decodedToken } = req;
+  if (decodedToken) {
+    const subscription = await service.getSubcription(decodedToken.sid);
+    res.send(subscription.toJSON());
+  } else {
+    res.status(401).end();
+  }
 };
 
 const getUser = async (req, res) => {
-  const { sid } = req.body;
+  const { sid } = req.params;
   const user = service.getUser(sid);
   res.send(user.toJSON());
 };
@@ -59,11 +66,32 @@ const login = async (req, res) => {
   res.send({ token });
 };
 
+const subscript = async (req, res) => {
+  const { decodedToken, body } = req;
+  const { planId } = body;
+  if (decodedToken) {
+    await service.subscript(decodedToken.sid, planId);
+    res.end();
+  } else {
+    res.status(401).end();
+  }
+};
+
+const unsubscript = async (req, res) => {
+  const { decodedToken } = req;
+  if (decodedToken) {
+    await service.unsubscript(decodedToken.sid);
+    res.end();
+  } else {
+    res.status(401).end();
+  }
+};
+
 const updateUser = async (req, res) => {
   const { decodedToken, body } = req;
-  const { sid, data } = body;
+  const { data } = body;
   data.password = data.password && sha512(data.password);
-  if (isEquals(decodedToken, sid) || isManager(decodedToken)) {
+  if (decodedToken) {
     if (!isManager(decodedToken)) {
       data.permission = data.permission && -1;
     }
@@ -78,8 +106,11 @@ module.exports = {
   createUser,
   disableUser,
   enableUser,
+  getSubcription,
   getUser,
   getUsers,
   login,
+  subscript,
+  unsubscript,
   updateUser,
 };

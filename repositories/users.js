@@ -6,7 +6,7 @@ const create = async (sid, password, {
   name = null, departmentId = -1, email = null, profileUrl = null,
 } = {}) => {
   await pool.query('INSERT INTO users VALUES (?, ?, ?, ?, ?, 0, 0, ?, 0, NOW())', [sid, name, departmentId, email, sha512(password), profileUrl]);
-  const user = await User.findBySid(sid);
+  const user = await findBySid(sid);
   return user;
 };
 
@@ -18,7 +18,8 @@ const findBySid = async (sid) => {
 
 const getAll = async () => {
   const [rows] = await pool.query('SELECT * FROM users');
-  return rows.map(User.create);
+  const users = rows.map(User.create);
+  return users;
 };
 
 const update = async (sid, data) => {
