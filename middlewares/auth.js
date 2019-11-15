@@ -14,11 +14,13 @@ const verifyToken = (req, res, next) => {
     if (bearer && bearer[1]) {
       const token = bearer[1];
       const decodedToken = jwt.verify(token, JWT_SECRET, { issuer: JWT_ISSUER });
+      req.verified = true;
       req.token = token;
       req.decodedToken = decodedToken;
       console.log('decodedToken', decodedToken);
     }
   }
+  req.verified = Boolean(req.verified);
   next();
 };
 

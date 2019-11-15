@@ -1,13 +1,12 @@
-const crypto = require('crypto');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { sha512 } = require('../utils');
 
 dotenv.config();
 
 const { JWT_ISSUER, JWT_SECRET } = process.env;
 
-const sha512 = (data) => crypto.createHash('sha512').update(data).digest('hex');
 
 const login = async (sid, password) => {
   const user = await User.findBySid(sid);
