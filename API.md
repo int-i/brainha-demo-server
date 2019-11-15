@@ -97,6 +97,13 @@ Output:
 ```text
 [{ id, name }]
 ```
+### GET /subscriptions
+
+Output:
+
+```text
+[{ id, plan_id?, user_id?, vaild, started_at, ended_at, canceled_at? }]
+```
 
 ### GET /plans
 
@@ -105,6 +112,8 @@ Output:
 ```text
 [{ id, name, cost, duration }]
 ```
+
+
 
 ## User
 
@@ -115,7 +124,7 @@ Output:
 Input:
 
 ```text
-{ sid, name?, department_id?, email?, password, profile_url? }
+{ sid, name?, department_id?, email?, password_hash, permission, reputatin,  profile_url?, hidden, created_at }
 ```
 
 Output:
@@ -197,7 +206,7 @@ Output:
 Input:
 
 ```text
-{ name, description }
+{ id, name, description?, hidden, created_at, board_type?, category_id  }
 ```
 
 ### GET /boards
@@ -479,3 +488,4 @@ Output:
 파일 다운로드 **(Auth)**
 
 Output: File
+
