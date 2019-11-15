@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 dotenv.config();
 
-const { BRAINHA_JWT_ISSUER, BRAINHA_JWT_SECRET } = process.env;
+const { JWT_ISSUER, JWT_SECRET } = process.env;
 
 const SCHEMA_REGEX = /^Bearer ([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*)$/;
 
@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
     const bearer = SCHEMA_REGEX.exec(schema);
     if (bearer && bearer[1]) {
       const token = bearer[1];
-      const decodedToken = jwt.verify(token, BRAINHA_JWT_SECRET, { issuer: BRAINHA_JWT_ISSUER });
+      const decodedToken = jwt.verify(token, JWT_SECRET, { issuer: JWT_ISSUER });
       req.token = token;
       req.decodedToken = decodedToken;
       console.log('decodedToken', decodedToken);

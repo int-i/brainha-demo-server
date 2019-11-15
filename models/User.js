@@ -1,5 +1,9 @@
+const pool = require('../database');
+
 class User {
-  static findBySid(sid) {
+  static async findBySid(sid) {
+    const [rows] = await pool.query('SELECT * FROM users WHERE sid = ?', [sid]);
+    console.log(rows);
     const mockUser = new User(
       sid,
       '홍길동',

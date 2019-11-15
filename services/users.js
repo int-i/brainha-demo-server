@@ -5,12 +5,12 @@ const User = require('../models/User');
 
 dotenv.config();
 
-const { BRAINHA_JWT_ISSUER, BRAINHA_JWT_SECRET } = process.env;
+const { JWT_ISSUER, JWT_SECRET } = process.env;
 
 const sha512 = (data) => crypto.createHash('sha512').update(data).digest('hex');
 
-const login = (sid, password) => {
-  const user = User.findBySid(sid);
+const login = async (sid, password) => {
+  const user = await User.findBySid(sid);
   const passwordHash = sha512(password);
   if (passwordHash === user.passwordHash) {
     const payload = {
@@ -22,7 +22,7 @@ const login = (sid, password) => {
       profileUrl: user.profileUrl,
       createdAt: user.createdAt,
     };
-    const token = jwt.sign(payload, BRAINHA_JWT_SECRET, { issuer: BRAINHA_JWT_ISSUER });
+    const token = jwt.sign(payload, JWT_SECRET, { issuer: JWT_ISSUER });
     return token;
   }
   throw Error('No User');

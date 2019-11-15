@@ -1,8 +1,8 @@
 const service = require('../services/users');
 
-const login = (req, res) => {
+const login = async (req, res) => {
   const { sid, password } = req.body;
-  const token = service.login(sid, password);
+  const token = await service.login(sid, password);
   res.send({
     token,
   });
