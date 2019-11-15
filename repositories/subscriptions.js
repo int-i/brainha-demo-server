@@ -3,7 +3,7 @@ const pool = require('../database');
 
 const create = async (sid, planId) => {
   await pool.query('INSERT INTO subscriptions (plan_id, sid, valid, started_at, ended_at) VALUES (?, ?, 1, NOW(), DATE_ADD(NOW(), INTERVAL (SELECT duration FROM plans WHERE id = ?) DAY)))', [planId, sid, planId]);
-  const user = await findById(sid);
+  const user = await findBySid(sid);
   return user;
 };
 
@@ -20,7 +20,7 @@ const getAll = async () => {
 };
 
 const update = async (sid, data) => {
-  await pool.query(`UPDATE subscriptions SET ${Object.entries(data).map((key, value) => `${key} = ${value}`).join(' ')} WHERE sid = ? AND valid = 1`, [sid]);
+  await pool.query(`UPDATE subscriptions SET ${Object.entries(data).map((key, value) => `${key} = ${value}`).join(', ')} WHERE sid = ? AND valid = 1`, [sid]);
 };
 
 module.exports = {

@@ -6,16 +6,16 @@ const createBoard = async (name, data) => {
   return board;
 };
 
-const disableBoard = async (id) => {
-  await boardRepository.update(id, { hidden: 1 });
+const disableBoard = async (boardId) => {
+  await boardRepository.update(boardId, { hidden: 1 });
 };
 
-const enableBoard = async (id) => {
-  await boardRepository.update(id, { hidden: 0 });
+const enableBoard = async (boardId) => {
+  await boardRepository.update(boardId, { hidden: 0 });
 };
 
-const getBoard = async (id) => {
-  const board = await boardRepository.findById(id);
+const getBoard = async (boardId) => {
+  const board = await boardRepository.findById(boardId);
   return board;
 };
 
@@ -24,17 +24,17 @@ const getBoards = async () => {
   return boards;
 };
 
-const getPosts = async (id) => {
-  const posts = await postRepository.findByBoardId(id);
+const getPosts = async (boardId) => {
+  const posts = await postRepository.findByBoardId(boardId);
   return posts;
 };
 
-const updateBoard = async (id, data) => {
-  await boardRepository.update(id, data);
+const updateBoard = async (boardId, data) => {
+  await boardRepository.update(boardId, data);
 };
 
-const writePost = async (id, data) => {
-  await postRepository.create(id, data);
+const writePost = async (boardId, sid, { title, content, tags }) => {
+  await postRepository.create(boardId, sid, title, content, { tags });
 };
 
 module.exports = {

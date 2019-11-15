@@ -27,17 +27,17 @@ const disableUser = async (req, res) => {
 const enableUser = async (req, res) => {
   const { decodedToken } = req;
   if (decodedToken) {
-    await service.enableUser(sid);
+    await service.enableUser(decodedToken.sid);
     res.end();
   } else {
     res.status(401).end();
   }
 };
 
-const getSubcription = async (req, res) => {
+const getSubscription = async (req, res) => {
   const { decodedToken } = req;
   if (decodedToken) {
-    const subscription = await service.getSubcription(decodedToken.sid);
+    const subscription = await service.getSubscription(decodedToken.sid);
     res.send(subscription.toJSON());
   } else {
     res.status(401).end();
@@ -95,7 +95,7 @@ const updateUser = async (req, res) => {
     if (!isManager(decodedToken)) {
       data.permission = data.permission && -1;
     }
-    await service.updateUser(sid, data);
+    await service.updateUser(decodedToken.sid, data);
     res.end();
   } else {
     res.status(401).end();
@@ -106,7 +106,7 @@ module.exports = {
   createUser,
   disableUser,
   enableUser,
-  getSubcription,
+  getSubscription,
   getUser,
   getUsers,
   login,

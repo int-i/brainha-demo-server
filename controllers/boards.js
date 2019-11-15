@@ -68,8 +68,9 @@ const updateBoard = async (req, res) => {
 const writePost = async (req, res) => {
   const { decodedToken, params, body } = req;
   const { id } = params;
+  const { title, content, tags } = body;
   if (decodedToken) {
-    await service.writePost(id, data);
+    await service.writePost(id, { title, content, tags });
     res.end();
   } else {
     res.status(401).end();

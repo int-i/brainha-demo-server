@@ -32,7 +32,7 @@ const enableUser = async (sid) => {
   await userRepository.update(sid, { hidden: 0 });
 };
 
-const getSubcription = async (sid) => {
+const getSubscription = async (sid) => {
   const subscription = await subscriptionRepository.findBySid(sid);
   return subscription;
 };
@@ -83,7 +83,7 @@ module.exports = {
   createUser,
   disableUser,
   enableUser,
-  getSubcription,
+  getSubscription,
   getUser,
   getUsers,
   login,

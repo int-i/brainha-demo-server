@@ -23,7 +23,7 @@ const getAll = async () => {
 };
 
 const update = async (sid, data) => {
-  await pool.query(`UPDATE users SET ${Object.entries(data).map((key, value) => `${key} = ${value}`).join(' ')} WHERE sid = ?`, [sid]);
+  await pool.query(`UPDATE users SET ${Object.entries(data).map((key, value) => `${key} = ${value}`).join(', ')} WHERE sid = ?`, [sid]);
 };
 
 module.exports = {
