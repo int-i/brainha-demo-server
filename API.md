@@ -12,20 +12,22 @@
 
 ### Info
 
-- [ ] 학과 정보
+- [x] 학과 정보
 - [ ] 구독 상품 정보
 
 ### User
 
 - [x] 회원가입
-- [ ] 모든 사용자 조회
-- [ ] 사용자 조회
+- [x] 모든 사용자 조회
+- [x] 사용자 조회
 - [ ] 사용자 정보 강제 수정
-- [ ] 사용자 정보 수정
+- [x] 사용자 정보 수정
 - [ ] 회원강퇴
-- [ ] 회원탈퇴
+- [x] 회원탈퇴
 - [x] 로그인(JWT 토큰 발급)
-- [ ] 구독
+- [x] 구독
+- [x] 구독 확인
+- [x] 구독 해지
 
 ### Category
 
@@ -35,26 +37,28 @@
 
 ### Board
 
-- [ ] 새 게시판 생성
-- [ ] 게시판 정보 조회
-- [ ] 게시판 수정
-- [ ] 게시판 삭제
-- [ ] **질문글 작성**
-- [ ] 게시판 질문글 조회
+- [x] 새 게시판 생성
+- [x] 모든 게시판 정보 조회
+- [x] 게시판 정보 조회
+- [x] 게시판 수정
+- [x] 게시판 삭제
+- [x] **글 작성**
+- [x] 게시판 글 조회
 
 ### Post
 
-- [ ] 모든 글 조회
-- [ ] 글 조회
+- [x] 모든 글 조회
+- [x] 글 조회
 - [ ] 글 강제 수정
-- [ ] 글 수정
+- [x] 글 수정
 - [ ] 글 강제 삭제
-- [ ] 글 삭제
-- [ ] **글 작성**
-- [ ] 게시판별 글 조회
-- [ ] **댓글 작성**
-- [ ] 글 좋아요
-- [ ] 글 좋아요 확인
+- [x] 글 삭제
+- [x] **답변글 작성**
+- [x] 글별 답변글 조회
+- [x] **댓글 작성**
+- [x] 댓글 조회
+- [x] 글 좋아요
+- [x] 글 좋아요 확인
 
 ### Comment Box
 
@@ -113,8 +117,6 @@ Output:
 [{ id, name, cost, duration }]
 ```
 
-
-
 ## User
 
 ### POST /users
@@ -124,7 +126,7 @@ Output:
 Input:
 
 ```text
-{ sid, name?, department_id?, email?, password_hash, permission, reputatin,  profile_url?, hidden, created_at }
+{ sid, name?, department_id?, email?, password, profile_url? }
 ```
 
 Output:
@@ -163,21 +165,21 @@ Input:
 { sid, name, email, password }
 ```
 
-### PATCH /users/{sid}
+### PATCH /users
 
 사용자 정보 수정 **(Auth)**
 
 Input:
 
 ```text
-{ sid, name, email, password }
+{ name, email, password }
 ```
 
 ### DELETE /users/{sid}
 
 회원강퇴 **(Auth: Manager)**
 
-### DELETE /users/{sid}
+### DELETE /users
 
 회원탈퇴 **(Auth)**
 
@@ -197,6 +199,30 @@ Output:
 { jwt }
 ```
 
+### POST /users/subscription
+
+구독 **(Auth)**
+
+Input:
+
+```text
+{ planId }
+```
+
+### GET /users/subscription
+
+구독 확인 **(Auth)**
+
+Output:
+
+```text
+{ planId, startedAt, endedAt }
+```
+
+### DELETE /users/subscription
+
+구독 해지 **(Auth)**
+
 ## Board
 
 ### POST /boards
@@ -206,7 +232,7 @@ Output:
 Input:
 
 ```text
-{ id, name, description?, hidden, created_at, board_type?, category_id  }
+{ name, description?, type, category_id? }
 ```
 
 ### GET /boards
@@ -216,7 +242,7 @@ Input:
 Output:
 
 ```text
-[{ id, name, description, created_at ] || []
+[{ id, name, description, type, category_id, created_at ] || []
 ```
 
 ### GET /boards/{id}
@@ -226,7 +252,7 @@ Output:
 Output:
 
 ```text
-{ id, name, description, created_at } || {}
+{ id, name, description, type, category_id, created_at } || {}
 ```
 
 ### PATCH /boards/{id}
@@ -243,9 +269,9 @@ Input:
 
 게시판 삭제 **(Auth: Manager)**
 
-### POST /boards/{id}/questions
+### POST /boards/{id}/posts
 
-질문글 작성 **(Auth)**
+글 작성 **(Auth)**
 
 Input:
 
@@ -253,9 +279,9 @@ Input:
 { title, content, tags }
 ```
 
-### GET /boards/{id}/questions
+### GET /boards/{id}/posts
 
-게시판 질문글 조회
+게시판 글 조회
 
 Output:
 
@@ -263,11 +289,11 @@ Output:
 [{ id, board_id, author_id, title, content, tags, views, likes, created_at }] || []
 ```
 
-## Question
+## Post
 
-### GET /questions
+### GET /posts
 
-모든 질문글 조회
+모든 글 조회
 
 Output:
 
@@ -275,7 +301,7 @@ Output:
 [{ board_id, id, author_id, title, content, tags, views, likes, created_at }] || []
 ```
 
-### GET /questions/{id}
+### GET /posts/{id}
 
 질문글 조회
 
@@ -285,7 +311,7 @@ Output:
 { board_id, id, author_id, title, content, tags, views, likes, created_at }
 ```
 
-### PATCH /questions/{id}
+### PATCH /posts/{id}
 
 질문글 강제 수정 **(Auth: Manager)**
 
@@ -295,7 +321,7 @@ Input:
 { board_id, title, content, tags }
 ```
 
-### PATCH /questions/{id}
+### PATCH /posts/{id}
 
 질문글 수정 **(Auth)**
 
@@ -305,15 +331,15 @@ Input:
 { board_id, title, content, tags }
 ```
 
-### DELETE /questions/{id}
+### DELETE /posts/{id}
 
 질문글 강제 삭제 **(Auth: Manager)**
 
-### DELETE /questions/{id}
+### DELETE /posts/{id}
 
 질문글 삭제 **(Auth)**
 
-### POST /questions/{id}/answers
+### POST /posts/{id}/commentboxes
 
 답변글 작성 **(Auth)**
 
@@ -323,7 +349,7 @@ Input:
 { content }
 ```
 
-### GET /questions/{id}/answers
+### GET /posts/{id}/commentboxes
 
 질문별 답변글 조회
 
@@ -333,7 +359,7 @@ Output:
 [{ id, question_id, author_id, content, likes, created_at }] || []
 ```
 
-### POST /questions/{id}/comments
+### POST /posts/{id}/comments
 
 댓글 작성 **(Auth)**
 
@@ -343,17 +369,27 @@ Input:
 { content }
 ```
 
-### POST /questions/{id}/likes
+### GET /posts/{id}/comments
+
+댓글 조회
+
+Output:
+
+```text
+{ content }
+```
+
+### POST /posts/{id}/likes
 
 질문글 좋아요 **(Auth)**
 
-### GET /questions/{id}/likes
+### GET /posts/{id}/likes
 
 질문글 좋아요 클릭 확인 **(Auth)**
 
-## Answer
+## Comment Box
 
-### GET /answers
+### GET /commentboxes
 
 모든 답변글 조회
 
@@ -363,7 +399,7 @@ Output:
 [{ question_id, id, author_id, content, likes, created_at }] || []
 ```
 
-### GET /answers/{id}
+### GET /commentboxes/{id}
 
 답변글 조회
 
@@ -373,7 +409,7 @@ Output:
 { question_id, id, author_id, content, likes, created_at }
 ```
 
-### PATCH /answers/{id}
+### PATCH /commentboxes/{id}
 
 답변글 강제 수정 **(Auth: Manager)**
 
@@ -383,7 +419,7 @@ Input:
 { content }
 ```
 
-### PATCH /answers/{id}
+### PATCH /commentboxes/{id}
 
 답변글 수정 **(Auth)**
 
@@ -393,15 +429,15 @@ Input:
 { content }
 ```
 
-### DELETE /answers/{id}
+### DELETE /commentboxes/{id}
 
 답변글 강제 삭제 **(Auth: Manager)**
 
-### DELETE /answers/{id}
+### DELETE /commentboxes/{id}
 
 답변글 삭제 **(Auth)**
 
-### POST /answers/{id}/comments
+### POST /commentboxes/{id}/comments
 
 댓글 작성 **(Auth)**
 
@@ -411,11 +447,11 @@ Input:
 { content }
 ```
 
-### POST /answers/{id}/likes
+### POST /commentboxes/{id}/likes
 
 답변글 좋아요 **(Auth)**
 
-### GET /answers/{id}/likes
+### GET /commentboxes/{id}/likes
 
 답변글 좋아요 클릭 확인 **(Auth)**
 
