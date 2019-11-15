@@ -10,9 +10,14 @@
 
 - [x] 핑퐁
 
+### Info
+
+- [ ] 학과 정보
+- [ ] 구독 상품 정보
+
 ### User
 
-- [ ] 회원가입
+- [x] 회원가입
 - [ ] 모든 사용자 조회
 - [ ] 사용자 조회
 - [ ] 사용자 정보 강제 수정
@@ -20,6 +25,13 @@
 - [ ] 회원강퇴
 - [ ] 회원탈퇴
 - [x] 로그인(JWT 토큰 발급)
+- [ ] 구독
+
+### Category
+
+- [ ] 모든 카테고리 조회
+- [ ] 카테고리 조회
+- [ ] 즐겨찾기 추가
 
 ### Board
 
@@ -30,21 +42,21 @@
 - [ ] **질문글 작성**
 - [ ] 게시판 질문글 조회
 
-### Question
+### Post
 
-- [ ] 모든 질문글 조회
-- [ ] 질문글 조회
-- [ ] 질문글 강제 수정
-- [ ] 질문글 수정
-- [ ] 질문글 강제 삭제
-- [ ] 질문글 삭제
-- [ ] **답변글 작성**
-- [ ] 질문별 답변글 조회
+- [ ] 모든 글 조회
+- [ ] 글 조회
+- [ ] 글 강제 수정
+- [ ] 글 수정
+- [ ] 글 강제 삭제
+- [ ] 글 삭제
+- [ ] **글 작성**
+- [ ] 게시판별 글 조회
 - [ ] **댓글 작성**
-- [ ] 질문글 좋아요
-- [ ] 질문글 좋아요 확인
+- [ ] 글 좋아요
+- [ ] 글 좋아요 확인
 
-### Answer
+### Comment Box
 
 - [ ] 모든 답변글 조회
 - [ ] 답변글 조회
@@ -67,14 +79,32 @@
 
 ### File
 
-- [ ] 파일 업로드
-- [ ] 파일 다운로드
+- [x] 파일 업로드
+- [x] 파일 다운로드
 
 ## Test
 
 ### GET /ping
 
 Output: pong
+
+## Info
+
+### GET /departments
+
+Output:
+
+```text
+[{ id, name }]
+```
+
+### GET /plans
+
+Output:
+
+```text
+[{ id, name, cost, duration }]
+```
 
 ## User
 
@@ -85,7 +115,13 @@ Output: pong
 Input:
 
 ```text
-{ sid, name, email, password }
+{ sid, name?, department_id?, email?, password, profile_url? }
+```
+
+Output:
+
+```text
+{ token }
 ```
 
 ### GET /users
@@ -95,7 +131,7 @@ Input:
 Output:
 
 ```text
-[{ sid, name, email, permission, reputation, profile_url, created_at }] || []
+[{ sid, name, department_id, email, permission, reputation, profile_url, created_at }] || []
 ```
 
 ### GET /users/{sid}
