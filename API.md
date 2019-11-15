@@ -2,7 +2,13 @@
 
 삭제와 탈퇴는 `DELETE`가 아닌 `UPDATE hidden=1`로 처리함
 
+파일(이미지, 첨부파일 등)은 글 작성이전 File API를 이용해 서버로 업로드
+
 ## Summary
+
+### Test
+
+- [x] 핑퐁
 
 ### User
 
@@ -13,7 +19,7 @@
 - [ ] 사용자 정보 수정
 - [ ] 회원강퇴
 - [ ] 회원탈퇴
-- [ ] 로그인 (JWT 토큰 발급)
+- [ ] 로그인(JWT 토큰 발급)
 
 ### Board
 
@@ -21,7 +27,7 @@
 - [ ] 게시판 정보 조회
 - [ ] 게시판 수정
 - [ ] 게시판 삭제
-- [ ] 질문글 작성
+- [ ] **질문글 작성**
 - [ ] 게시판 질문글 조회
 
 ### Question
@@ -32,8 +38,11 @@
 - [ ] 질문글 수정
 - [ ] 질문글 강제 삭제
 - [ ] 질문글 삭제
-- [ ] 답변글 작성
-- [ ] 질문 답변글 조회
+- [ ] **답변글 작성**
+- [ ] 질문별 답변글 조회
+- [ ] **댓글 작성**
+- [ ] 질문글 좋아요
+- [ ] 질문글 좋아요 확인
 
 ### Answer
 
@@ -43,6 +52,29 @@
 - [ ] 답변글 수정
 - [ ] 답변글 강제 삭제
 - [ ] 답변글 삭제
+- [ ] **댓글 작성**
+- [ ] 답변글 좋아요
+- [ ] 답변글 좋아요 확인
+
+### Comment
+
+- [ ] 모든 댓글 조회
+- [ ] 댓글 조회
+- [ ] 댓글 강제 수정
+- [ ] 댓글 수정
+- [ ] 댓글 강제 삭제
+- [ ] 댓글 삭제
+
+### File
+
+- [ ] 파일 업로드
+- [ ] 파일 다운로드
+
+## Test
+
+### GET /ping
+
+Output: pong
 
 ## User
 
@@ -63,7 +95,7 @@ Input:
 Output:
 
 ```text
-[{ sid, name, email, permission, profile_url, created_at }] || []
+[{ sid, name, email, permission, reputation, profile_url, created_at }] || []
 ```
 
 ### GET /users/{sid}
@@ -73,7 +105,7 @@ Output:
 Output:
 
 ```text
-{ sid, name, email, permission, profile_url, created_at } || {}
+{ sid, name, email, permission, reputation, profile_url, created_at } || {}
 ```
 
 ### PATCH /users/{sid}
@@ -106,7 +138,7 @@ Input:
 
 ### POST /users/auth
 
-로그인 (JWT 토큰 발급)
+로그인(JWT 토큰 발급)
 
 Input:
 
@@ -183,7 +215,7 @@ Input:
 Output:
 
 ```text
-[{ id, board_id, author_id, title, tags, view, likes, created_at }] || []
+[{ id, board_id, author_id, title, content, tags, views, likes, created_at }] || []
 ```
 
 ## Question
@@ -195,7 +227,7 @@ Output:
 Output:
 
 ```text
-[{ board_id, id, author_id, title, tags, view, likes, created_at }] || []
+[{ board_id, id, author_id, title, content, tags, views, likes, created_at }] || []
 ```
 
 ### GET /questions/{id}
@@ -205,7 +237,7 @@ Output:
 Output:
 
 ```text
-{ board_id, id, author_id, title, content, tags, view, likes, created_at }
+{ board_id, id, author_id, title, content, tags, views, likes, created_at }
 ```
 
 ### PATCH /questions/{id}
@@ -246,15 +278,33 @@ Input:
 { content }
 ```
 
-### GET /boards/{id}/answers
+### GET /questions/{id}/answers
 
-답변글 목록 조회
+질문별 답변글 조회
 
 Output:
 
 ```text
 [{ id, question_id, author_id, content, likes, created_at }] || []
 ```
+
+### POST /questions/{id}/comments
+
+댓글 작성 **(Auth)**
+
+Input:
+
+```text
+{ content }
+```
+
+### POST /questions/{id}/likes
+
+질문글 좋아요 **(Auth)**
+
+### GET /questions/{id}/likes
+
+질문글 좋아요 클릭 확인 **(Auth)**
 
 ## Answer
 
@@ -265,7 +315,7 @@ Output:
 Output:
 
 ```text
-[{ question_id, id, author_id, tags, likes, created_at }] || []
+[{ question_id, id, author_id, content, likes, created_at }] || []
 ```
 
 ### GET /answers/{id}
@@ -275,7 +325,7 @@ Output:
 Output:
 
 ```text
-{ question_id, id, author_id, content, tags, likes, created_at }
+{ question_id, id, author_id, content, likes, created_at }
 ```
 
 ### PATCH /answers/{id}
@@ -285,7 +335,7 @@ Output:
 Input:
 
 ```text
-{ question_id, content, tags }
+{ content }
 ```
 
 ### PATCH /answers/{id}
@@ -295,7 +345,7 @@ Input:
 Input:
 
 ```text
-{ question_id, content, tags }
+{ content }
 ```
 
 ### DELETE /answers/{id}
@@ -305,3 +355,91 @@ Input:
 ### DELETE /answers/{id}
 
 답변글 삭제 **(Auth)**
+
+### POST /answers/{id}/comments
+
+댓글 작성 **(Auth)**
+
+Input:
+
+```text
+{ content }
+```
+
+### POST /answers/{id}/likes
+
+답변글 좋아요 **(Auth)**
+
+### GET /answers/{id}/likes
+
+답변글 좋아요 클릭 확인 **(Auth)**
+
+## Comment
+
+### GET /comments
+
+모든 댓글 조회
+
+Output:
+
+```text
+[{ question_id?, answer_id?, id, author_id, content, created_at }] || []
+```
+
+### GET /comments/{id}
+
+댓글 조회
+
+Output:
+
+```text
+{ question_id?, answer_id?, id, author_id, content, created_at }
+```
+
+### PATCH /comments/{id}
+
+댓글 강제 수정 **(Auth: Manager)**
+
+Input:
+
+```text
+{ content }
+```
+
+### PATCH /comments/{id}
+
+댓글 수정 **(Auth)**
+
+Input:
+
+```text
+{ content }
+```
+
+### DELETE /comments/{id}
+
+댓글 강제 삭제 **(Auth: Manager)**
+
+### DELETE /comments/{id}
+
+댓글 삭제 **(Auth)**
+
+## File
+
+### POST /file
+
+파일 업로드 **(Auth)**
+
+Input: File
+
+Output:
+
+```text
+{ file_name }
+```
+
+### GET /file/{hash}
+
+파일 다운로드 **(Auth)**
+
+Output: File
