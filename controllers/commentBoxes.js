@@ -1,4 +1,4 @@
-const service = require('../services/boards');
+const service = require('../services/commentBoxes');
 
 const checkLikes = async (req, res) => {
   const { id } = req.params;
@@ -9,7 +9,7 @@ const checkLikes = async (req, res) => {
 const getComments = async (req, res) => {
   const { id } = req.params;
   const comments = await service.getComments(id);
-  res.send(comments);
+  res.send(comments.map((comment) => comment.toJSON()));
 };
 
 const getCommentBox = async (req, res) => {
@@ -19,9 +19,8 @@ const getCommentBox = async (req, res) => {
 };
 
 const getCommentBoxes = async (req, res) => {
-  const { id } = req.params;
-  const commentBoxes = await service.getCommentBoxes(id);
-  res.send(commentBoxes);
+  const commentBoxes = await service.getCommentBoxes();
+  res.send(commentBoxes.map((commentBox) => commentBox.toJSON()));
 };
 
 const hideCommentBox = async (req, res) => {
@@ -30,8 +29,9 @@ const hideCommentBox = async (req, res) => {
   if (decodedToken) {
     await service.hideCommentBox(id);
     res.end();
+  } else {
+    res.status(401).end();
   }
-  res.status(401).end();
 };
 
 const like = async (req, res) => {
@@ -51,8 +51,9 @@ const showCommentBox = async (req, res) => {
   if (decodedToken) {
     await service.showCommentBox(id);
     res.end();
+  } else {
+    res.status(401).end();
   }
-  res.status(401).end();
 };
 
 const updateCommentBox = async (req, res) => {
@@ -62,8 +63,9 @@ const updateCommentBox = async (req, res) => {
   if (decodedToken) {
     await service.updateCommentBox(id, data);
     res.end();
+  } else {
+    res.status(401).end();
   }
-  res.status(401).end();
 };
 
 const writeComment = async (req, res) => {
@@ -73,8 +75,9 @@ const writeComment = async (req, res) => {
   if (decodedToken) {
     await service.writeComment(id, decodedToken.sid, content);
     res.end();
+  } else {
+    res.status(401).end();
   }
-  res.status(401).end();
 };
 
 module.exports = {
