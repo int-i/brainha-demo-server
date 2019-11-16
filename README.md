@@ -1,5 +1,7 @@
 # BraInha Server
 
+<p align="center"><img src="./assets/logo.png" width="256px" alt="Logo"></p>
+
 > 교내 학술 정보 교류 플랫폼
 
 ## Installation
