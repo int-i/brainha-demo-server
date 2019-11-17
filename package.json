@@ -27,6 +27,7 @@
     "url": "git+https://github.com/int-i/brainha-server.git"
   },
   "contributors": [
+    "HyeonJi Kim",
     "Seungjae Park <astro.psj@gmail.com>"
   ],
   "license": "UNLICENSED",
