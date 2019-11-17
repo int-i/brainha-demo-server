@@ -9,7 +9,7 @@
 - Clone the repo:
 
 ```bash
-git clone https://github.com/Astro36/Kokoa.git
+git clone https://github.com/int-i/brainha-demo-server.git
 ```
 
 ## Build Setup
